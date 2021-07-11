@@ -52,6 +52,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // DIALOG FRAGMENT --------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------
+
     private fun showDfMultiChoiceListDialog() {
         // Bug: If u add message then u wont see list
         val fragmentTransaction = supportFragmentManager.beginTransaction().apply {
@@ -60,12 +68,12 @@ class MainActivity : AppCompatActivity() {
             if (null != previousFragment) remove(previousFragment)
             addToBackStack(null)
         }
-        CustomDialogFragment.getInstance(
+        CustomDialogFragment(
             title = "Select Options",
             multiSelectArray = DEFAULT_ARRAY,
             positiveBtnText = "DONE",
             negativeBtnText = "CANCEL",
-            positiveAction = { it: List<Any>? -> binding.tvResult.text = "${it} got selected!" }
+            positiveAction = { it: List<Any>? -> binding.tvResult.text = "$it got selected!" }
         ).show(fragmentTransaction, TAG_CUSTOM_DIALOG_FRAGMENT)
     }
 
@@ -77,12 +85,12 @@ class MainActivity : AppCompatActivity() {
             if (null != previousFragment) remove(previousFragment)
             addToBackStack(null)
         }
-        CustomDialogFragment.getInstance(
+        CustomDialogFragment(
             title = "Select an option",
             singleSelectArray = DEFAULT_ARRAY,
             positiveBtnText = "DONE",
             negativeBtnText = "CANCEL",
-            positiveAction = { it: List<Any>? -> binding.tvResult.text = "${it?.get(0)} got selected!" }
+            positiveAction = { it: List<Any>? -> binding.tvResult.text = "${it?.getOrElse(0, { "" })} got selected!" }
         ).show(fragmentTransaction, TAG_CUSTOM_DIALOG_FRAGMENT)
     }
 
@@ -94,8 +102,8 @@ class MainActivity : AppCompatActivity() {
             if (null != previousFragment) remove(previousFragment)
             addToBackStack(null)
         }
-        CustomDialogFragment.getInstance(
-            isCancelable = true,
+        CustomDialogFragment(
+            dialogIsCancelable = true,
             title = "Select an option",
             listItemsArray = DEFAULT_ARRAY,
             itemAction = { it: String -> binding.tvResult.text = "$it got selected!" }
@@ -109,7 +117,7 @@ class MainActivity : AppCompatActivity() {
             if (null != previousFragment) remove(previousFragment)
             addToBackStack(null)
         }
-        CustomDialogFragment.getInstance(
+        CustomDialogFragment(
             layout = R.layout.layout_image,
             title = "See It",
             message = "See the lion!",
@@ -130,9 +138,9 @@ class MainActivity : AppCompatActivity() {
             if (null != previousFragment) remove(previousFragment)
             addToBackStack(null)
         }
-        CustomDialogFragment.getInstance(
+        CustomDialogFragment(
             icon = R.drawable.ic_baseline_info_24,
-            view = loginBinding.root,
+            dialogView = loginBinding.root,
             title = "Login",
             message = "Please login to access content!",
             positiveBtnText = "Login",
@@ -177,9 +185,9 @@ class MainActivity : AppCompatActivity() {
             if (null != previousFragment) remove(previousFragment)
             addToBackStack(null)
         }
-        CustomDialogFragment.getInstance(
+        CustomDialogFragment(
             icon = R.drawable.ic_baseline_info_24,
-            view = linearLayout,
+            dialogView = linearLayout,
             title = "Login",
             message = "Please login to access content!",
             positiveBtnText = "Login",
@@ -198,7 +206,7 @@ class MainActivity : AppCompatActivity() {
             if (null != previousFragment) remove(previousFragment)
             addToBackStack(null)
         }
-        CustomDialogFragment.getInstance(
+        CustomDialogFragment(
             icon = R.drawable.ic_baseline_info_24,
             title = "Decisions",
             message = "Basic Decision Dialog!",
@@ -218,8 +226,8 @@ class MainActivity : AppCompatActivity() {
             if (null != previousFragment) remove(previousFragment)
             addToBackStack(null)
         }
-        CustomDialogFragment.getInstance(
-            isCancelable = true,
+        CustomDialogFragment(
+            dialogIsCancelable = true,
             icon = R.drawable.ic_baseline_info_24,
             title = "Info",
             message = "Basic Info Dialog!",
@@ -227,6 +235,14 @@ class MainActivity : AppCompatActivity() {
             positiveAction = { binding.tvResult.text = "I read it!" }
         ).show(fragmentTransaction, TAG_CUSTOM_DIALOG_FRAGMENT)
     }
+
+    // NORMAL DIALOG ----------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------
 
     private fun showMultiChoiceListDialog() {
         // Bug: If u add message then u wont see list
@@ -236,7 +252,7 @@ class MainActivity : AppCompatActivity() {
             multiSelectArray = DEFAULT_ARRAY,
             positiveBtnText = "DONE",
             negativeBtnText = "CANCEL",
-            positiveAction = { it: List<Any>? -> binding.tvResult.text = "${it} got selected!" }
+            positiveAction = { it: List<Any>? -> binding.tvResult.text = "$it got selected!" }
         )
     }
 
@@ -248,7 +264,7 @@ class MainActivity : AppCompatActivity() {
             singleSelectArray = DEFAULT_ARRAY,
             positiveBtnText = "DONE",
             negativeBtnText = "CANCEL",
-            positiveAction = { it: List<Any>? -> binding.tvResult.text = "${it?.get(0)} got selected!" }
+            positiveAction = { it: List<Any>? -> binding.tvResult.text = "${it?.getOrElse(0, { "" })} got selected!" }
         )
     }
 
@@ -395,15 +411,15 @@ class MainActivity : AppCompatActivity() {
             if (null != view) setView(view)
             if (null != layout) setView(layout)
             if (null != listItemsArray) setItems(listItemsArray) { dialog, which ->
-                itemAction?.invoke(listItemsArray?.get(which))
+                itemAction?.invoke(listItemsArray[which])
             }
-            if (null != singleSelectArray) setSingleChoiceItems(singleSelectArray, 0 /* default checked item in list */) { dialog, which ->
+            if (null != singleSelectArray) setSingleChoiceItems(singleSelectArray, -1 /* default checked item in list */) { dialog, which ->
                 list.clear()
-                list.add(singleSelectArray?.get(which))
+                list.add(singleSelectArray[which])
             }
             if (null != multiSelectArray) setMultiChoiceItems(multiSelectArray, null) { dialog, which, isChecked ->
-                if (isChecked) list.add(multiSelectArray?.get(which))
-                else list.remove(multiSelectArray?.get(which))
+                if (isChecked) list.add(multiSelectArray[which])
+                else list.remove(multiSelectArray[which])
             }
             show()
         }
