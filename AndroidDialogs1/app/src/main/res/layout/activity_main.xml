@@ -21,8 +21,8 @@
             android:padding="16dp"
             android:text="RESULT"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-            android:textColor="@android:color/black" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="@color/purple_900" />
     </androidx.cardview.widget.CardView>
 
     <ScrollView
@@ -110,6 +110,15 @@
                 android:textColor="@android:color/white" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_with_centered_btns"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/purple_500"
+                android:text="With Centered Buttons"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+                android:textColor="@android:color/white" />
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_df_info_dialog"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -179,6 +188,15 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/purple_500"
                 android:text="DF Multi Choice Dialog"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+                android:textColor="@android:color/white" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_df_with_centered_btns"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/purple_500"
+                android:text="DF With Centered Buttons"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
                 android:textColor="@android:color/white" />
 

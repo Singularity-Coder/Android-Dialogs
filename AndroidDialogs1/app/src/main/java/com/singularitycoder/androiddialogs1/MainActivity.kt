@@ -1,6 +1,5 @@
 package com.singularitycoder.androiddialogs1
 
-import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.text.InputType
@@ -9,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import com.singularitycoder.androiddialogs1.databinding.ActivityMainBinding
@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
             btnListSelectionDialog.setOnClickListener { showListSelectionDialog() }
             btnSingleChoiceDialog.setOnClickListener { showSingleChoiceListDialog() }
             btnMultiChoiceDialog.setOnClickListener { showMultiChoiceListDialog() }
+            btnWithCenteredBtns.setOnClickListener { showDialogWithCenteredBtns() }
 
             btnDfInfoDialog.setOnClickListener { showDfInfoDialog() }
             btnDfDecisionDialog.setOnClickListener { showDfDecisionDialog() }
@@ -49,6 +50,7 @@ class MainActivity : AppCompatActivity() {
             btnDfListSelectionDialog.setOnClickListener { showDfListSelectionDialog() }
             btnDfSingleChoiceDialog.setOnClickListener { showDfSingleChoiceListDialog() }
             btnDfMultiChoiceDialog.setOnClickListener { showDfMultiChoiceListDialog() }
+            btnDfWithCenteredBtns.setOnClickListener { showDfWithCenteredBtns() }
         }
     }
 
@@ -59,6 +61,27 @@ class MainActivity : AppCompatActivity() {
     // ------------------------------------------------------------------------------------------------------------------
     // ------------------------------------------------------------------------------------------------------------------
     // ------------------------------------------------------------------------------------------------------------------
+
+    private fun showDfWithCenteredBtns() {
+        val fragmentTransaction = supportFragmentManager.beginTransaction().apply {
+            setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            val previousFragment = supportFragmentManager.findFragmentByTag(TAG_CUSTOM_DIALOG_FRAGMENT)
+            if (null != previousFragment) remove(previousFragment)
+            addToBackStack(null)
+        }
+        CustomDialogFragment(
+            icon = R.drawable.ic_baseline_info_24,
+            title = "Choices",
+            message = "Basic Choice Dialog!",
+            positiveBtnText = "Choice 1",
+            negativeBtnText = "Choice 2",
+            neutralBtnText = "Choice 3",
+            hasCenteredBtns = true,
+            positiveAction = { binding.tvResult.text = "Choice 1 Clicked" },
+            negativeAction = { binding.tvResult.text = "Choice 2 Clicked" },
+            neutralAction = { binding.tvResult.text = "Choice 3 Clicked" }
+        ).show(fragmentTransaction, TAG_CUSTOM_DIALOG_FRAGMENT)
+    }
 
     private fun showDfMultiChoiceListDialog() {
         // Bug: If u add message then u wont see list
@@ -90,7 +113,7 @@ class MainActivity : AppCompatActivity() {
             singleSelectArray = DEFAULT_ARRAY,
             positiveBtnText = "DONE",
             negativeBtnText = "CANCEL",
-            positiveAction = { it: List<Any>? -> binding.tvResult.text = "${it?.getOrElse(0, { "" })} got selected!" }
+            positiveAction = { it: List<Any>? -> binding.tvResult.text = "${it?.getOrElse(index = 0, defaultValue = { "" })} got selected!" }
         ).show(fragmentTransaction, TAG_CUSTOM_DIALOG_FRAGMENT)
     }
 
@@ -244,6 +267,22 @@ class MainActivity : AppCompatActivity() {
     // ------------------------------------------------------------------------------------------------------------------
     // ------------------------------------------------------------------------------------------------------------------
 
+    private fun showDialogWithCenteredBtns() {
+        showMultiPurposeDialog(
+            context = this,
+            icon = R.drawable.ic_baseline_info_24,
+            title = "Choices",
+            message = "Basic Choice Dialog!",
+            positiveBtnText = "Choice 1",
+            negativeBtnText = "Choice 2",
+            neutralBtnText = "Choice 3",
+            hasCenteredBtns = true,
+            positiveAction = { binding.tvResult.text = "Choice 1 Clicked" },
+            negativeAction = { binding.tvResult.text = "Choice 2 Clicked" },
+            neutralAction = { binding.tvResult.text = "Choice 3 Clicked" }
+        )
+    }
+
     private fun showMultiChoiceListDialog() {
         // Bug: If u add message then u wont see list
         showMultiPurposeDialog(
@@ -264,7 +303,7 @@ class MainActivity : AppCompatActivity() {
             singleSelectArray = DEFAULT_ARRAY,
             positiveBtnText = "DONE",
             negativeBtnText = "CANCEL",
-            positiveAction = { it: List<Any>? -> binding.tvResult.text = "${it?.getOrElse(0, { "" })} got selected!" }
+            positiveAction = { it: List<Any>? -> binding.tvResult.text = "${it?.getOrElse(index = 0, defaultValue = { "" })} got selected!" }
         )
     }
 
@@ -380,8 +419,8 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    fun showMultiPurposeDialog(
-        context: Context?,
+    private fun showMultiPurposeDialog(
+        context: Context,
         isCancelable: Boolean = false,
         icon: Int? = null,
         view: View? = null,
@@ -395,6 +434,7 @@ class MainActivity : AppCompatActivity() {
         positiveBtnText: String? = "NA",
         negativeBtnText: String? = "NA",
         neutralBtnText: String? = "NA",
+        hasCenteredBtns: Boolean = false,
         positiveAction: ((selectedList: List<Any>?) -> Unit)? = null,
         negativeAction: (() -> Unit)? = null,
         neutralAction: (() -> Unit)? = null
@@ -421,7 +461,7 @@ class MainActivity : AppCompatActivity() {
                 if (isChecked) list.add(multiSelectArray[which])
                 else list.remove(multiSelectArray[which])
             }
-            show()
+            if (hasCenteredBtns) show().withCenteredButtons() else show()
         }
     }
 }

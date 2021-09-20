@@ -21,6 +21,7 @@ class CustomDialogFragment(
     val positiveBtnText: String? = "NA",
     val negativeBtnText: String? = "NA",
     val neutralBtnText: String? = "NA",
+    val hasCenteredBtns: Boolean = false,
     val positiveAction: ((selectedList: List<Any>?) -> Unit)? = null,
     val negativeAction: (() -> Unit)? = null,
     val neutralAction: (() -> Unit)? = null
@@ -57,6 +58,6 @@ class CustomDialogFragment(
                 else list.remove(multiSelectArray[which])
             }
         }
-        return builder.create()
+        return if (hasCenteredBtns) builder.create().withCenteredButtons() else builder.create()
     }
 }
